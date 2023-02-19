@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
   },
-  completedButton: {
+  completeButton: {
     padding: 6,
-    backgroundColor: "#02e364",
+    backgroundColor: "blue",
     borderRadius: 8,
     marginRight: 10,
   },
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f2645a",
+    backgroundColor: "red",
   },
 });
 

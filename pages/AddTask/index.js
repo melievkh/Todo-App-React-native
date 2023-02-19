@@ -1,31 +1,38 @@
 import React, { useState } from "react";
-import { Modal, Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Modal, Pressable, Text, TextInput, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
 import styles from "./style";
+import { addTask } from "../../redux/reducer/tasksReducer";
+import { closeModal } from "../../redux/reducer/modalReducer";
 
-const AddTask = ({ visible, setIsModalOpen, onAddTask }) => {
+const AddTask = () => {
   const [enteredTask, setEnteredTask] = useState("");
+  const modal = useSelector((state) => state.modal);
+  const dispatch = useDispatch();
 
   const inputHandler = (value) => {
     setEnteredTask(value);
   };
 
-  const addTaskHandler = () => {
-    onAddTask(enteredTask);
+  const onAddTask = () => {
+    if (enteredTask.trim().length === 0) {
+      Alert.alert("Error", "Enter a task before adding !!");
+      return;
+    }
+    dispatch(addTask(enteredTask));
+    dispatch(closeModal());
     setEnteredTask("");
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+    Alert.alert("Success", "Task added successfully!");
   };
 
   return (
-    <Modal animationType="slide" visible={visible}>
+    <Modal animationType="slide" visible={modal}>
       <View style={styles.addTaskHeader}>
         <Text style={styles.addTaskTitle}>Add new task</Text>
         <Pressable
-          onPress={closeModal}
+          onPress={() => dispatch(closeModal())}
           android_ripple={{ color: "#d47d85", borderless: true }}
           style={styles.closeModalWrapper}
         >
@@ -42,7 +49,7 @@ const AddTask = ({ visible, setIsModalOpen, onAddTask }) => {
         <Pressable
           android_ripple={{ color: "#192ee6", borderless: true }}
           style={styles.saveButton}
-          onPress={addTaskHandler}
+          onPress={onAddTask}
         >
           <Text style={styles.saveButtonText}>Save</Text>
         </Pressable>

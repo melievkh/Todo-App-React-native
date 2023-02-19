@@ -1,27 +1,13 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import CompletedTasks from "./pages/CompletedTasks";
-import Main from "./pages/Main/Index";
-
-const Stack = createNativeStackNavigator();
+import { Provider } from "react-redux";
+import Footer from "./components/Footer";
+import Navigation from "./Navigation";
+import store from "./redux/store";
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="main"
-          component={Main}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="completed"
-          component={CompletedTasks}
-          options={{ title: "Completed Tasks" }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
   );
 };
 

@@ -1,40 +1,26 @@
 import React from "react";
 import { Alert, Pressable, Text, View } from "react-native";
+import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
 import styles from "./style";
+import { taskCompleted, taskDeleted } from "../../redux/reducer/tasksReducer";
 
-const Task = ({ item, tasks, setTasks }) => {
-  const onDeleteTask = (id) => {
+const Task = ({ item }) => {
+  const dispatch = useDispatch();
+
+  const onDeleteTask = () => {
     Alert.alert("Confirm", "Remove this task?", [
       {
         text: "Yes",
-        onPress: () =>
-          setTasks((currentTasks) => {
-            return currentTasks.filter((task) => task.id !== id);
-          }),
+        onPress: () => dispatch(taskDeleted({ id: item?.id })),
       },
       { text: "No" },
     ]);
   };
 
-  const onTaskCompleted = (taskId) => {
-    const newTask = tasks.map((item) => {
-      if (item.id == taskId) {
-        return { ...item, completed: true };
-      }
-      return item;
-    });
-    setTasks(newTask);
-  };
-
-  const onTaskUndo = (taskId) => {
-    const newTask = tasks.map((item) => {
-      if (item.id == taskId) {
-        return { ...item, completed: false };
-      }
-      return item;
-    });
+  const onTaskCompleted = () => {
+    dispatch(taskCompleted({ id: item?.id }));
   };
 
   return (
@@ -50,26 +36,16 @@ const Task = ({ item, tasks, setTasks }) => {
       </Text>
 
       <View style={styles.buttonsWrapper}>
-        {item?.completed ? (
-          <Pressable
-            style={styles.completedButton}
-            onPress={() => onTaskCompleted(item.id)}
-          >
-            <Text style={{ color: "white" }}>completed</Text>
-          </Pressable>
-        ) : (
-          <Pressable
-            style={styles.completedButton}
-            onPress={() => onTaskUndo(item.id)}
-          >
-            <Text style={{ color: "white" }}>undone</Text>
-          </Pressable>
-        )}
-
         <Pressable
-          style={styles.deleteButton}
-          onPress={() => onDeleteTask(item?.id)}
+          style={styles.completeButton}
+          onPress={() => onTaskCompleted()}
         >
+          <Text style={{ color: "white" }}>
+            {item?.completed ? "completed" : "complete"}
+          </Text>
+        </Pressable>
+
+        <Pressable style={styles.deleteButton} onPress={() => onDeleteTask()}>
           <Ionicons name="trash-outline" size={18} color="#ffffff" />
         </Pressable>
       </View>
