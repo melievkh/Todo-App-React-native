@@ -4,6 +4,10 @@ const tasksSlice = createSlice({
   name: "tasks",
   initialState: [],
   reducers: {
+    setTasks: (state, action) => {
+      // return (state = action.payload);
+    },
+
     addTask: (state, action) => {
       const newTask = {
         id: Math.random().toString(),
@@ -26,5 +30,6 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { addTask, taskCompleted, taskDeleted } = tasksSlice.actions;
+export const { addTask, taskCompleted, taskDeleted, setTasks } =
+  tasksSlice.actions;
 export default tasksSlice.reducer;
