@@ -1,26 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Modal, Pressable, Text, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 
 import styles from "./style";
-import { addTask, setTasks } from "../../redux/reducer/tasksReducer";
+import { addTask } from "../../redux/reducer/tasksReducer";
 import { closeModal } from "../../redux/reducer/modalReducer";
 
 const AddTask = () => {
   const [enteredTask, setEnteredTask] = useState("");
   const modal = useSelector((state) => state.modal);
-  const tasks = useSelector((state) => state.tasks);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    getTasksFromUserDevice();
-  }, []);
-
-  useEffect(() => {
-    saveToUserDevice(tasks);
-  }, [tasks]);
 
   const inputHandler = (value) => {
     setEnteredTask(value);
@@ -35,25 +25,6 @@ const AddTask = () => {
     dispatch(closeModal());
     setEnteredTask("");
     Alert.alert("Success", "Task added successfully!");
-  };
-
-  const saveToUserDevice = async (tasks) => {
-    try {
-      const stringifyTasks = JSON.stringify(tasks);
-      await AsyncStorage.setItem("tasks", stringifyTasks);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getTasksFromUserDevice = async () => {
-    try {
-      const tasks = await AsyncStorage.getItem("tasks");
-      console.log(JSON.parse(tasks));
-      return tasks != null ? JSON.parse(tasks) : null;
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
@@ -76,7 +47,7 @@ const AddTask = () => {
           value={enteredTask}
         />
         <Pressable
-          android_ripple={{ color: "#192ee6", borderless: true }}
+          android_ripple={{ color: "#147819", borderless: true }}
           style={styles.saveButton}
           onPress={onAddTask}
         >

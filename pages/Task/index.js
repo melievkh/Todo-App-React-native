@@ -36,14 +36,26 @@ const Task = ({ item }) => {
       </Text>
 
       <View style={styles.buttonsWrapper}>
-        <Pressable
-          style={styles.completeButton}
-          onPress={() => onTaskCompleted()}
-        >
-          <Text style={{ color: "white" }}>
-            {item?.completed ? "completed" : "complete"}
-          </Text>
-        </Pressable>
+        {item?.completed ? (
+          <Pressable
+            style={styles.completedButton}
+            onPress={() => onTaskCompleted()}
+          >
+            <Text style={{ color: "white" }}>Done</Text>
+            <Ionicons name="checkmark-done-outline" size={18} color="white" />
+          </Pressable>
+        ) : (
+          <Pressable
+            style={styles.completeButton}
+            onPress={() => onTaskCompleted()}
+          >
+            <Ionicons
+              name="checkmark-done-circle-outline"
+              size={18}
+              color="#ffffff"
+            />
+          </Pressable>
+        )}
 
         <Pressable style={styles.deleteButton} onPress={() => onDeleteTask()}>
           <Ionicons name="trash-outline" size={18} color="#ffffff" />
